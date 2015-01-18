@@ -1,2 +1,4 @@
 # Don't commit executables.
 *.out
+*.hi
+*.o
