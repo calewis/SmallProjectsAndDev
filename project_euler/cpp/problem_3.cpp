@@ -6,27 +6,26 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <algorithm>
 
 unsigned long problem_3(unsigned long input) {
     std::vector<unsigned long> primes;
-    primes.reserve(10); // Assume small number of primes
+    primes.reserve(10);  // Assume small number of primes
 
     const auto limit = std::sqrt(input) + 1;
     for (auto i = 2ul; i < limit; ++i) {
-        if (input % i == 0) {
-            // Divide i by all smaller primes of input to test for primeyness
-            bool prime = true;
-            for (auto const &p : primes) {
-                if (i % p == 0) {
-                    prime = false;
-                    break;
-                }
-            }
 
-            if (prime) {  // if i was prime lets add it to our list of primes
+        if (input % i == 0) {
+
+            // Divide i by all smaller primes of input to test for primeyness
+            if (std::none_of(
+                    primes.begin(), primes.end(),
+                    [=](unsigned long const &p) { return 0 == i % p; })) {
                 primes.push_back(i);
             }
+
         }
+
     }
 
     // Largest prime we found will be the larget prime divisor
