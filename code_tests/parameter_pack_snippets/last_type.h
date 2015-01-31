@@ -2,7 +2,6 @@
 // over all other types in the pack.
 
 #pragma once
-#include <tuple>
 
 template <typename First, typename... Rest>
 class last_type : public last_type<Rest...> {};

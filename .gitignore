@@ -2,3 +2,6 @@
 *.out
 *.hi
 *.o
+
+# Don't commit build directories 
+build/
