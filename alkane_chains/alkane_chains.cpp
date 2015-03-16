@@ -10,26 +10,33 @@ using drew_string = std::string;
 #include <openbabel-2.0/openbabel/builder.h>
 #include <openbabel-2.0/openbabel/mol.h>
 
-
 int main(int argc, char** argv) {
-    int num_middle_units;
+    int num_carbons = 0;
     drew_string my_out_file;
 
     if (argc == 3) {
-        num_middle_units = std::stoi(argv[1]);
+        num_carbons = std::stoi(argv[1]);
         my_out_file = argv[2];
     } else {
-        std::cout << "Usages is: ./program num_middle_units out.xyz" << std::endl;
+        std::cout << "Usages is: ./program {number of carbons} out.xyz"
+                  << std::endl;
         return 1;
     }
 
-    constexpr char mid_unit = 'C';
-    std::stringstream mol_stream("C");
+    constexpr char unit = 'C';
+    std::stringstream mol_stream("C");  // Have at least 1.
 
-    for(auto i = 0; i < num_middle_units; ++i){
-        mol_stream << mid_unit;
+    if (num_carbons <= 0) {
+        std::cout << "Input number of carbons " << num_carbons
+                  << " illegal. Defaulting to 1 carbon." << std::endl;
+    } else {
+        std::cout << "Number of carbons in chain is " << num_carbons
+                  << std::endl;
     }
-    std::cout << "Mol string = " << mol_stream.str() << std::endl;
+
+    for (auto i = 0; i < num_carbons; ++i) {
+        mol_stream << unit;
+    }
 
     std::ofstream out(my_out_file.c_str());
 
@@ -46,7 +53,7 @@ int main(int argc, char** argv) {
 
     OpenBabel::OBMol in_mol;
 
-    if(conv.Read(&in_mol)){
+    if (conv.Read(&in_mol)) {
         OpenBabel::OBBuilder mol_builder;
         mol_builder.Build(in_mol);
         in_mol.AddHydrogens();
