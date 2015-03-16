@@ -2,6 +2,7 @@
 *.out
 *.hi
 *.o
+.ycm*
 
 
 # Don't commit build directories 
